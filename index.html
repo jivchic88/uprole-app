@@ -8,9 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap" rel="stylesheet">
   <style>
-    /* ============================================================
-       TOKENS
-    ============================================================ */
     :root {
       --bg:            #07071a;
       --glass:         rgba(255,255,255,0.055);
@@ -29,10 +26,6 @@
       --r:             18px;
       --r-sm:          12px;
     }
-
-    /* ============================================================
-       RESET
-    ============================================================ */
     *, *::before, *::after {
       margin: 0; padding: 0; box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
@@ -47,475 +40,213 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ============================================================
-       ANIMATED BACKGROUND
-    ============================================================ */
-    .bg {
-      position: fixed; inset: 0; z-index: 0;
-      overflow: hidden; pointer-events: none;
-    }
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(90px);
-      will-change: transform;
-    }
-    .orb-1 {
-      width: 480px; height: 480px;
-      background: radial-gradient(circle, rgba(110,60,255,0.55) 0%, transparent 70%);
-      top: -160px; left: -120px;
-      animation: float1 14s ease-in-out infinite;
-    }
-    .orb-2 {
-      width: 380px; height: 380px;
-      background: radial-gradient(circle, rgba(0,180,255,0.45) 0%, transparent 70%);
-      top: 25%; right: -100px;
-      animation: float2 17s ease-in-out infinite;
-    }
-    .orb-3 {
-      width: 320px; height: 320px;
-      background: radial-gradient(circle, rgba(255,80,150,0.35) 0%, transparent 70%);
-      bottom: 15%; left: 5%;
-      animation: float3 11s ease-in-out infinite;
-    }
-    .orb-4 {
-      width: 260px; height: 260px;
-      background: radial-gradient(circle, rgba(0,230,118,0.25) 0%, transparent 70%);
-      bottom: -60px; right: 10%;
-      animation: float1 19s ease-in-out infinite reverse;
-    }
-    @keyframes float1 {
-      0%,100% { transform: translate(0,0) scale(1); }
-      40%      { transform: translate(40px,-35px) scale(1.07); }
-      70%      { transform: translate(-20px,25px) scale(0.93); }
-    }
-    @keyframes float2 {
-      0%,100% { transform: translate(0,0) scale(1); }
-      35%      { transform: translate(-30px,40px) scale(0.95); }
-      65%      { transform: translate(20px,-20px) scale(1.06); }
-    }
-    @keyframes float3 {
-      0%,100% { transform: translate(0,0) scale(1); }
-      50%      { transform: translate(25px,-30px) scale(1.1); }
-    }
+    /* ── ANIMATED BACKGROUND ── */
+    .bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+    .orb { position: absolute; border-radius: 50%; filter: blur(90px); will-change: transform; }
+    .orb-1 { width:480px;height:480px;background:radial-gradient(circle,rgba(110,60,255,.55)0%,transparent 70%);top:-160px;left:-120px;animation:float1 14s ease-in-out infinite; }
+    .orb-2 { width:380px;height:380px;background:radial-gradient(circle,rgba(0,180,255,.45)0%,transparent 70%);top:25%;right:-100px;animation:float2 17s ease-in-out infinite; }
+    .orb-3 { width:320px;height:320px;background:radial-gradient(circle,rgba(255,80,150,.35)0%,transparent 70%);bottom:15%;left:5%;animation:float3 11s ease-in-out infinite; }
+    .orb-4 { width:260px;height:260px;background:radial-gradient(circle,rgba(0,230,118,.25)0%,transparent 70%);bottom:-60px;right:10%;animation:float1 19s ease-in-out infinite reverse; }
+    @keyframes float1 { 0%,100%{transform:translate(0,0) scale(1)} 40%{transform:translate(40px,-35px) scale(1.07)} 70%{transform:translate(-20px,25px) scale(.93)} }
+    @keyframes float2 { 0%,100%{transform:translate(0,0) scale(1)} 35%{transform:translate(-30px,40px) scale(.95)} 65%{transform:translate(20px,-20px) scale(1.06)} }
+    @keyframes float3 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(25px,-30px) scale(1.1)} }
+    @keyframes sweep   { 0%{left:-120%} 60%,100%{left:160%} }
+    @keyframes pulseBoss { 0%,100%{box-shadow:0 0 0 0 rgba(255,67,83,.25)} 50%{box-shadow:0 0 0 7px rgba(255,67,83,0)} }
+    @keyframes panelIn { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes popIn   { from{opacity:0;transform:scale(.85)} to{opacity:1;transform:scale(1)} }
 
-    /* Boss mode overrides */
-    .boss-mode .orb-1 {
-      background: radial-gradient(circle, rgba(255,67,83,0.55) 0%, transparent 70%);
-    }
-    .boss-mode .orb-2 {
-      background: radial-gradient(circle, rgba(255,159,67,0.45) 0%, transparent 70%);
-    }
-    .boss-mode .orb-3 {
-      background: radial-gradient(circle, rgba(255,67,83,0.35) 0%, transparent 70%);
-    }
+    .boss-mode .orb-1 { background:radial-gradient(circle,rgba(255,67,83,.55)0%,transparent 70%); }
+    .boss-mode .orb-2 { background:radial-gradient(circle,rgba(255,159,67,.45)0%,transparent 70%); }
+    .boss-mode .orb-3 { background:radial-gradient(circle,rgba(255,67,83,.35)0%,transparent 70%); }
 
-    /* ============================================================
-       LAYOUT
-    ============================================================ */
-    .app {
-      position: relative; z-index: 1;
-      max-width: 430px; margin: 0 auto;
-      padding-bottom: 110px;
-    }
+    /* ── LAYOUT ── */
+    .app { position:relative;z-index:1;max-width:430px;margin:0 auto;padding-bottom:120px; }
 
-    /* ============================================================
-       HEADER
-    ============================================================ */
+    /* ── HEADER ── */
     .header {
-      padding: 18px 16px 0;
-      position: sticky; top: 0; z-index: 200;
-      background: linear-gradient(to bottom,
-        rgba(7,7,26,0.96) 75%, transparent);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+      padding:18px 16px 0;
+      position:sticky;top:0;z-index:200;
+      background:linear-gradient(to bottom,rgba(7,7,26,.97) 75%,transparent);
+      backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
     }
+    .header-row { display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px; }
 
-    .header-row {
-      display: flex; align-items: center;
-      justify-content: space-between; gap: 8px;
-      margin-bottom: 14px;
-    }
+    .pill { display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border-radius:100px;font-size:12.5px;font-weight:600;border:1px solid var(--glass-border);background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);white-space:nowrap; }
+    .pill-day  { color:var(--accent2);border-color:rgba(0,200,255,.22);background:rgba(0,200,255,.08); }
+    .pill-day .muted { color:var(--text-60); }
+    .pill-xp   { color:var(--gold);border-color:rgba(255,208,77,.28);background:rgba(255,208,77,.08);position:relative;overflow:hidden; }
+    .pill-xp::after { content:'';position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,208,77,.35),transparent);animation:sweep 3.5s ease-in-out infinite; }
+    .pill-boss { color:var(--boss-red);border-color:rgba(255,67,83,.38);background:rgba(255,67,83,.12);animation:pulseBoss 1.8s ease-in-out infinite; }
 
-    /* Pill badges */
-    .pill {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 6px 13px;
-      border-radius: 100px;
-      font-size: 12.5px; font-weight: 600;
-      border: 1px solid var(--glass-border);
-      background: var(--glass);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      white-space: nowrap;
-    }
-    .pill-day  { color: var(--accent2); border-color: rgba(0,200,255,0.22); background: rgba(0,200,255,0.08); }
-    .pill-day .muted { color: var(--text-60); }
-    .pill-xp   {
-      color: var(--gold);
-      border-color: rgba(255,208,77,0.28);
-      background: rgba(255,208,77,0.08);
-      position: relative; overflow: hidden;
-    }
-    .pill-xp::after {
-      content: '';
-      position: absolute; top: 0; left: -120%; width: 60%; height: 100%;
-      background: linear-gradient(90deg,transparent,rgba(255,208,77,0.35),transparent);
-      animation: sweep 3.5s ease-in-out infinite;
-    }
-    @keyframes sweep { 0%{left:-120%} 60%,100%{left:160%} }
+    .lesson-title { font-size:21px;font-weight:800;letter-spacing:-.4px;line-height:1.22;padding-bottom:18px; }
 
-    .pill-boss {
-      color: var(--boss-red);
-      border-color: rgba(255,67,83,0.38);
-      background: rgba(255,67,83,0.12);
-      animation: pulseBoss 1.8s ease-in-out infinite;
-    }
-    @keyframes pulseBoss {
-      0%,100%{box-shadow:0 0 0 0 rgba(255,67,83,0.25)}
-      50%{box-shadow:0 0 0 7px rgba(255,67,83,0)}
-    }
+    /* ── TABS ── */
+    .tabs { display:flex;gap:7px;padding:0 16px 14px;overflow-x:auto;scrollbar-width:none; }
+    .tabs::-webkit-scrollbar { display:none; }
+    .tab-btn { flex-shrink:0;display:inline-flex;align-items:center;gap:6px;padding:8px 17px;border-radius:100px;border:1px solid var(--glass-border);background:var(--glass);color:var(--text-60);font-size:13.5px;font-weight:600;cursor:pointer;transition:color .2s,background .2s,box-shadow .2s,border-color .2s;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);white-space:nowrap; }
+    .tab-btn:active { transform:scale(.96); }
+    .tab-btn.active { background:linear-gradient(130deg,var(--accent) 0%,var(--accent2) 100%);border-color:transparent;color:#fff;box-shadow:0 4px 22px rgba(100,75,255,.38); }
+    .boss-mode .tab-btn.active { background:linear-gradient(130deg,var(--boss-red) 0%,var(--boss-orange) 100%);box-shadow:0 4px 22px rgba(255,67,83,.35); }
 
-    .lesson-title {
-      font-size: 22px; font-weight: 800;
-      letter-spacing: -0.4px; line-height: 1.22;
-      padding-bottom: 18px;
-    }
+    /* ── PANELS ── */
+    .panel { display:none;padding:0 16px;animation:panelIn .28s ease; }
+    .panel.active { display:block; }
 
-    /* ============================================================
-       TABS
-    ============================================================ */
-    .tabs {
-      display: flex; gap: 7px;
-      padding: 0 16px 14px;
-      overflow-x: auto; scrollbar-width: none;
-    }
-    .tabs::-webkit-scrollbar { display: none; }
+    /* ── GLASS CARD ── */
+    .card { background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--r);padding:20px;margin-bottom:12px;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px); }
+    .card-label { display:flex;align-items:center;gap:8px;margin-bottom:14px; }
+    .card-label-icon { width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0; }
+    .l-theory   { background:rgba(124,92,255,.22); }
+    .l-book     { background:rgba(0,200,255,.18); }
+    .l-task     { background:rgba(0,230,118,.18); }
+    .l-iv       { background:rgba(255,208,77,.18); }
+    .l-glossary { background:rgba(255,107,170,.18); }
+    .l-quiz     { background:rgba(45,212,191,.2); }
+    .card-label-text { font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--text-60); }
 
-    .tab-btn {
-      flex-shrink: 0;
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 8px 17px;
-      border-radius: 100px;
-      border: 1px solid var(--glass-border);
-      background: var(--glass);
-      color: var(--text-60);
-      font-size: 13.5px; font-weight: 600;
-      cursor: pointer;
-      transition: color .2s, background .2s, box-shadow .2s, border-color .2s;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      white-space: nowrap;
-    }
-    .tab-btn:active { transform: scale(0.96); }
-    .tab-btn.active {
-      background: linear-gradient(130deg, var(--accent) 0%, var(--accent2) 100%);
-      border-color: transparent;
-      color: #fff;
-      box-shadow: 0 4px 22px rgba(100,75,255,0.38);
-    }
-    .boss-mode .tab-btn.active {
-      background: linear-gradient(130deg, var(--boss-red) 0%, var(--boss-orange) 100%);
-      box-shadow: 0 4px 22px rgba(255,67,83,0.35);
-    }
+    /* ── BOSS BANNER ── */
+    .boss-banner { display:none;position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(255,67,83,.14)0%,rgba(255,159,67,.14)100%);border:1px solid rgba(255,67,83,.28);border-radius:var(--r);padding:22px 20px;margin-bottom:12px;text-align:center; }
+    .boss-banner::before { content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% -20%,rgba(255,67,83,.25)0%,transparent 65%); }
+    .boss-banner-emoji { font-size:40px;line-height:1;margin-bottom:8px; }
+    .boss-banner-title { font-size:22px;font-weight:800;background:linear-gradient(130deg,var(--boss-red),var(--boss-orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:5px; }
+    .boss-banner-sub   { font-size:13.5px;color:var(--text-60);line-height:1.5; }
 
-    /* ============================================================
-       TAB PANELS
-    ============================================================ */
-    .panel { display: none; padding: 0 16px; animation: panelIn .28s ease; }
-    .panel.active { display: block; }
-    @keyframes panelIn {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    /* ── BODY TEXT ── */
+    .body-text { font-size:15px;line-height:1.72;color:var(--text-80); }
+    .body-text p { margin-bottom:12px; }
+    .body-text p:last-child { margin-bottom:0; }
+    .body-text ul { padding-left:20px;margin-bottom:12px; }
+    .body-text li { margin-bottom:6px; }
+    .body-text strong { color:#fff; }
 
-    /* ============================================================
-       GLASS CARD BASE
-    ============================================================ */
-    .card {
-      background: var(--glass);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--r);
-      padding: 20px;
-      margin-bottom: 12px;
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-    }
+    /* ── BOOK CARD ── */
+    .book-card { border-left:3px solid var(--accent2);background:rgba(0,200,255,.05);border-top-left-radius:4px;border-bottom-left-radius:4px; }
+    .book-source { font-size:12.5px;font-weight:600;font-style:italic;color:var(--accent2);margin-bottom:10px; }
+    .book-text   { font-size:14px;line-height:1.68;color:rgba(255,255,255,.75);font-style:italic; }
+    .book-text p { margin-bottom:10px; }
+    .book-text p:last-child { margin-bottom:0; }
 
-    .card-label {
-      display: flex; align-items: center; gap: 8px;
-      margin-bottom: 14px;
-    }
-    .card-label-icon {
-      width: 32px; height: 32px; border-radius: 9px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px; flex-shrink: 0;
-    }
-    .l-theory   { background: rgba(124,92,255,.22); }
-    .l-book     { background: rgba(0,200,255,.18); }
-    .l-task     { background: rgba(0,230,118,.18); }
-    .l-iv       { background: rgba(255,208,77,.18); }
-    .l-glossary { background: rgba(255,107,170,.18); }
+    /* ── TASK CARD ── */
+    .task-card { background:rgba(0,230,118,.07);border-color:rgba(0,230,118,.2);position:relative;overflow:hidden; }
+    .task-card::after { content:'';position:absolute;top:-50px;right:-50px;width:140px;height:140px;background:radial-gradient(circle,rgba(0,230,118,.18)0%,transparent 70%);pointer-events:none; }
 
-    .card-label-text {
-      font-size: 11px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: .9px;
-      color: var(--text-60);
-    }
+    /* ── INTERVIEW CARD ── */
+    .iv-question { font-size:15.5px;font-weight:600;line-height:1.5;color:rgba(255,255,255,.92);margin-bottom:14px; }
+    .hint-btn { display:inline-flex;align-items:center;gap:7px;padding:10px 16px;border-radius:var(--r-sm);background:rgba(255,208,77,.08);border:1px solid rgba(255,208,77,.22);color:var(--gold);font-size:13px;font-weight:600;cursor:pointer;transition:background .2s; }
+    .hint-btn:hover { background:rgba(255,208,77,.14); }
+    .hint-body { display:none;margin-top:12px;padding:14px 16px;border-radius:var(--r-sm);background:rgba(255,208,77,.06);border:1px solid rgba(255,208,77,.15);font-size:14px;line-height:1.65;color:var(--text-80);animation:panelIn .22s ease; }
+    .hint-body.open { display:block; }
 
-    /* ============================================================
-       BOSS BATTLE BANNER
-    ============================================================ */
-    .boss-banner {
-      display: none;
-      position: relative; overflow: hidden;
-      background: linear-gradient(135deg,
-        rgba(255,67,83,.14) 0%, rgba(255,159,67,.14) 100%);
-      border: 1px solid rgba(255,67,83,.28);
-      border-radius: var(--r);
-      padding: 22px 20px;
-      margin-bottom: 12px;
-      text-align: center;
-    }
-    .boss-banner::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(circle at 50% -20%,
-        rgba(255,67,83,.25) 0%, transparent 65%);
-    }
-    .boss-banner-emoji { font-size: 40px; line-height: 1; margin-bottom: 8px; }
-    .boss-banner-title {
-      font-size: 22px; font-weight: 800;
-      background: linear-gradient(130deg, var(--boss-red), var(--boss-orange));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      margin-bottom: 5px;
-    }
-    .boss-banner-sub {
-      font-size: 13.5px; color: var(--text-60); line-height: 1.5;
-    }
+    /* ── STATS ── */
+    .stat-row { display:flex;gap:10px;padding:0; }
+    .stat-cell { flex:1;text-align:center;padding:15px 8px;border-radius:var(--r-sm);background:var(--glass);border:1px solid var(--glass-border); }
+    .stat-val  { font-size:26px;font-weight:800;background:linear-gradient(130deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1; }
+    .boss-mode .stat-val { background:linear-gradient(130deg,var(--boss-red),var(--boss-orange));-webkit-background-clip:text; }
+    .stat-label { font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--text-60);margin-top:4px; }
 
-    /* ============================================================
-       THEORY TEXT
-    ============================================================ */
-    .body-text {
-      font-size: 15px; line-height: 1.72;
-      color: var(--text-80);
-    }
-    .body-text p { margin-bottom: 13px; }
-    .body-text p:last-child { margin-bottom: 0; }
+    /* ── GLOSSARY ── */
+    .glossary-list { display:flex;flex-direction:column;gap:9px; }
+    .glossary-item { padding:13px 15px;border-radius:var(--r-sm);background:rgba(255,107,170,.07);border:1px solid rgba(255,107,170,.16); }
+    .glossary-term { font-size:13.5px;font-weight:700;color:var(--pink);margin-bottom:4px; }
+    .glossary-def  { font-size:13px;line-height:1.55;color:var(--text-60); }
 
-    /* ============================================================
-       BOOK CARD
-    ============================================================ */
-    .book-card {
-      border-left: 3px solid var(--accent2);
-      background: rgba(0,200,255,.05);
-      border-top-left-radius: 4px;
-      border-bottom-left-radius: 4px;
+    /* ── QUIZ CARD ── */
+    .quiz-card { background:rgba(45,212,191,.07);border-color:rgba(45,212,191,.2); }
+    .quiz-intro { font-size:13px;color:var(--text-60);margin-bottom:14px;line-height:1.5; }
+    .quiz-block { margin-bottom:20px; }
+    .quiz-block:last-child { margin-bottom:0; }
+    .quiz-q { font-size:14.5px;font-weight:600;line-height:1.5;color:rgba(255,255,255,.92);margin-bottom:10px; }
+    .quiz-options { display:flex;flex-direction:column;gap:7px; }
+    .quiz-btn {
+      background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:10px;
+      color:var(--text-80);cursor:pointer;font-size:13.5px;padding:11px 14px;text-align:left;
+      transition:background .18s,border-color .18s;font-family:inherit;line-height:1.45;
     }
-    .book-source {
-      font-size: 12.5px; font-weight: 600; font-style: italic;
-      color: var(--accent2); margin-bottom: 10px;
-    }
-    .book-text {
-      font-size: 14px; line-height: 1.68;
-      color: rgba(255,255,255,.75);
-      font-style: italic;
-    }
+    .quiz-btn:hover:not(:disabled) { background:rgba(45,212,191,.1);border-color:rgba(45,212,191,.35); }
+    .quiz-btn:disabled { cursor:default; }
+    .quiz-btn.correct { background:rgba(0,230,118,.12);border-color:rgba(0,230,118,.45);color:var(--green); }
+    .quiz-btn.wrong   { background:rgba(255,67,83,.1);border-color:rgba(255,67,83,.4);color:var(--boss-red); }
+    .quiz-feedback { display:none;margin-top:10px;padding:11px 14px;border-radius:10px;font-size:13.5px;line-height:1.5; }
+    .quiz-feedback.show { display:block; }
+    .quiz-feedback.ok   { background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.25);color:#86efac; }
+    .quiz-feedback.fail { background:rgba(255,67,83,.08);border:1px solid rgba(255,67,83,.25);color:#fca5a5; }
 
-    /* ============================================================
-       TASK CARD
-    ============================================================ */
-    .task-card {
-      background: rgba(0,230,118,.07);
-      border-color: rgba(0,230,118,.2);
-      position: relative; overflow: hidden;
-    }
-    .task-card::after {
-      content: '';
-      position: absolute; top: -50px; right: -50px;
-      width: 140px; height: 140px;
-      background: radial-gradient(circle, rgba(0,230,118,.18) 0%, transparent 70%);
-      pointer-events: none;
-    }
+    /* ── CLASSIFY QUIZ ── */
+    .classify-list { display:flex;flex-direction:column;gap:8px; }
+    .classify-item { padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:10px; }
+    .classify-label { font-size:13.5px;line-height:1.4;color:var(--text-80);margin-bottom:8px; }
+    .classify-btns  { display:flex;gap:6px;flex-wrap:wrap; }
+    .cls-btn { border:1px solid rgba(255,255,255,.15);border-radius:7px;background:rgba(255,255,255,.05);color:var(--text-60);cursor:pointer;font-size:12px;font-weight:600;padding:6px 11px;transition:all .15s;font-family:inherit; }
+    .cls-btn:hover:not(:disabled) { background:rgba(124,92,255,.15);border-color:rgba(124,92,255,.5); }
+    .cls-btn.picked  { background:rgba(124,92,255,.2);border-color:rgba(124,92,255,.6);color:#c4b5fd;font-weight:700; }
+    .cls-btn.correct { background:rgba(0,230,118,.12);border-color:rgba(0,230,118,.45);color:var(--green); }
+    .cls-btn.wrong   { background:rgba(255,67,83,.1);border-color:rgba(255,67,83,.4);color:var(--boss-red); }
+    .cls-btn.reveal  { background:rgba(0,230,118,.07);border-color:rgba(0,230,118,.35);color:var(--green); }
+    .cls-btn:disabled { cursor:default; }
+    .check-btn { margin-top:12px;background:rgba(124,92,255,.12);border:1px solid rgba(124,92,255,.45);border-radius:9px;color:var(--accent2);cursor:pointer;font-size:13px;font-weight:700;padding:10px 20px;transition:all .2s;font-family:inherit; }
+    .check-btn:hover:not(:disabled) { background:rgba(124,92,255,.25); }
+    .check-btn:disabled { opacity:.5;cursor:default; }
+    .check-result { display:none;margin-top:10px;padding:11px 14px;border-radius:10px;font-size:13.5px;background:rgba(124,92,255,.08);border:1px solid rgba(124,92,255,.25);color:var(--accent2); }
+    .check-result.show { display:block; }
 
-    /* ============================================================
-       INTERVIEW CARD
-    ============================================================ */
-    .iv-question {
-      font-size: 15.5px; font-weight: 600;
-      line-height: 1.5; color: rgba(255,255,255,.92);
-      margin-bottom: 14px;
-    }
-    .hint-btn {
-      display: inline-flex; align-items: center; gap: 7px;
-      padding: 10px 16px;
-      border-radius: var(--r-sm);
-      background: rgba(255,208,77,.08);
-      border: 1px solid rgba(255,208,77,.22);
-      color: var(--gold);
-      font-size: 13px; font-weight: 600;
-      cursor: pointer;
-      transition: background .2s;
-    }
-    .hint-btn:hover { background: rgba(255,208,77,.14); }
-    .hint-body {
-      display: none;
-      margin-top: 12px;
-      padding: 14px 16px;
-      border-radius: var(--r-sm);
-      background: rgba(255,208,77,.06);
-      border: 1px solid rgba(255,208,77,.15);
-      font-size: 14px; line-height: 1.65;
-      color: var(--text-80);
-      animation: panelIn .22s ease;
-    }
-    .hint-body.open { display: block; }
+    /* ── BOSS SCENARIO ── */
+    .boss-scenario-card { background:rgba(255,67,83,.07);border-color:rgba(255,67,83,.2); }
+    .boss-q { background:rgba(0,0,0,.25);border-radius:9px;padding:10px 14px;margin-top:8px;font-size:13.5px;line-height:1.5;color:var(--gold); }
+    .boss-q::before { content:'❓ '; }
 
-    /* ============================================================
-       PROGRESS ROW
-    ============================================================ */
-    .stat-row {
-      display: flex; gap: 10px;
-      padding: 16px;
-    }
-    .stat-cell {
-      flex: 1; text-align: center;
-      padding: 15px 8px;
-      border-radius: var(--r-sm);
-      background: var(--glass);
-      border: 1px solid var(--glass-border);
-    }
-    .stat-val {
-      font-size: 26px; font-weight: 800;
-      background: linear-gradient(130deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      line-height: 1.1;
-    }
-    .boss-mode .stat-val {
-      background: linear-gradient(130deg, var(--boss-red), var(--boss-orange));
-      -webkit-background-clip: text;
-    }
-    .stat-label {
-      font-size: 10px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: .7px;
-      color: var(--text-60); margin-top: 4px;
-    }
+    /* ── BOTTOM BAR ── */
+    .bottom-bar { position:fixed;bottom:0;left:0;right:0;padding:14px 16px max(14px,env(safe-area-inset-bottom));background:linear-gradient(to top,rgba(7,7,26,.98) 55%,transparent);z-index:300; }
+    .done-btn { width:100%;padding:16px;border-radius:var(--r);border:none;cursor:pointer;background:linear-gradient(130deg,var(--accent) 0%,var(--accent2) 100%);color:#fff;font-size:16px;font-weight:700;letter-spacing:.2px;box-shadow:0 8px 32px rgba(100,75,255,.38);transition:transform .18s,box-shadow .18s,background .4s; }
+    .done-btn:active { transform:scale(.97); }
+    .done-btn.success { background:linear-gradient(130deg,#00c875,#00e676)!important;box-shadow:0 8px 32px rgba(0,200,100,.35)!important; }
+    .boss-mode .done-btn { background:linear-gradient(130deg,var(--boss-red) 0%,var(--boss-orange) 100%);box-shadow:0 8px 32px rgba(255,67,83,.38); }
 
-    /* ============================================================
-       GLOSSARY
-    ============================================================ */
-    .glossary-list { display: flex; flex-direction: column; gap: 9px; }
-    .glossary-item {
-      padding: 13px 15px;
-      border-radius: var(--r-sm);
-      background: rgba(255,107,170,.07);
-      border: 1px solid rgba(255,107,170,.16);
-    }
-    .glossary-term {
-      font-size: 13.5px; font-weight: 700;
-      color: var(--pink); margin-bottom: 4px;
-    }
-    .glossary-def {
-      font-size: 13px; line-height: 1.55;
-      color: var(--text-60);
-    }
-
-    /* ============================================================
-       BOTTOM BAR + DONE BUTTON
-    ============================================================ */
-    .bottom-bar {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      padding: 14px 16px max(14px, env(safe-area-inset-bottom));
-      background: linear-gradient(to top,
-        rgba(7,7,26,0.98) 55%, transparent);
-      z-index: 300;
-    }
-    .done-btn {
-      width: 100%;
-      padding: 16px;
-      border-radius: var(--r);
-      border: none; cursor: pointer;
-      background: linear-gradient(130deg, var(--accent) 0%, var(--accent2) 100%);
-      color: #fff;
-      font-size: 16px; font-weight: 700;
-      letter-spacing: .2px;
-      box-shadow: 0 8px 32px rgba(100,75,255,.38);
-      transition: transform .18s, box-shadow .18s, background .4s;
-    }
-    .done-btn:active { transform: scale(0.97); box-shadow: 0 3px 14px rgba(100,75,255,.25); }
-    .done-btn.success {
-      background: linear-gradient(130deg, #00c875, #00e676) !important;
-      box-shadow: 0 8px 32px rgba(0,200,100,.35) !important;
-    }
-    .boss-mode .done-btn {
-      background: linear-gradient(130deg, var(--boss-red) 0%, var(--boss-orange) 100%);
-      box-shadow: 0 8px 32px rgba(255,67,83,.38);
-    }
-
-    /* ============================================================
-       UTIL
-    ============================================================ */
-    .hidden { display: none !important; }
-    .mt-4  { margin-top: 4px; }
-    .mt-12 { margin-top: 12px; }
+    .hidden { display:none!important; }
   </style>
 </head>
 <body>
 
-<!-- ═══ Animated orbs ═══ -->
 <div class="bg" id="bg">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
-  <div class="orb orb-4"></div>
+  <div class="orb orb-1"></div><div class="orb orb-2"></div>
+  <div class="orb orb-3"></div><div class="orb orb-4"></div>
 </div>
 
 <div class="app" id="app">
 
-  <!-- ─── Header ─── -->
+  <!-- Header -->
   <div class="header">
     <div class="header-row">
       <span class="pill pill-day" id="dayPill">
-        <span class="muted">День</span>
-        <strong id="hDay">—</strong>
-        <span class="muted">·</span>
-        <span class="muted">Нед.</span>
-        <strong id="hWeek">—</strong>
+        <span class="muted">День</span><strong id="hDay">—</strong>
+        <span class="muted">·</span><span class="muted">Нед.</span><strong id="hWeek">—</strong>
       </span>
       <span class="pill pill-xp" id="xpPill">⚡ <span id="hXP">0</span> XP</span>
     </div>
     <h1 class="lesson-title" id="hTitle">Загрузка...</h1>
   </div>
 
-  <!-- ─── Tabs ─── -->
-  <div class="tabs" id="tabs">
-    <button class="tab-btn active" data-tab="theory"  onclick="go('theory',this)">📚 Теория</button>
-    <button class="tab-btn"        data-tab="task"    onclick="go('task',this)"  id="btnTask">🎯 Задание</button>
-    <button class="tab-btn"        data-tab="extra"   onclick="go('extra',this)" id="btnExtra">💡 Ещё</button>
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="go('theory',this)">📚 Теория</button>
+    <button class="tab-btn"        onclick="go('task',this)"  >🎯 Задание</button>
+    <button class="tab-btn"        onclick="go('extra',this)" >💡 Ещё</button>
   </div>
 
-  <!-- ═══════════════ PANEL: THEORY ═══════════════ -->
+  <!-- PANEL: THEORY -->
   <div class="panel active" id="p-theory">
-
-    <!-- Boss battle banner -->
     <div class="boss-banner" id="bossBanner">
       <div class="boss-banner-emoji">⚔️</div>
       <div class="boss-banner-title">Босс-битва!</div>
       <div class="boss-banner-sub">Финальный урок недели.<br>Покажи всё, чему научился.</div>
     </div>
-
-    <!-- Theory -->
-    <div class="card">
+    <div class="card" id="theoryCard">
       <div class="card-label">
         <div class="card-label-icon l-theory">📚</div>
         <span class="card-label-text">Теория</span>
       </div>
       <div class="body-text" id="theoryBody"></div>
     </div>
-
-    <!-- Book excerpt -->
+    <div id="quizSlot"></div>
     <div class="card book-card hidden" id="bookCard">
       <div class="card-label">
         <div class="card-label-icon l-book">📖</div>
@@ -524,13 +255,10 @@
       <div class="book-source" id="bookSource"></div>
       <div class="book-text"   id="bookBody"></div>
     </div>
-
   </div>
 
-  <!-- ═══════════════ PANEL: TASK ═══════════════ -->
+  <!-- PANEL: TASK -->
   <div class="panel" id="p-task">
-
-    <!-- Task -->
     <div class="card task-card">
       <div class="card-label">
         <div class="card-label-icon l-task">🎯</div>
@@ -538,8 +266,6 @@
       </div>
       <div class="body-text" id="taskBody"></div>
     </div>
-
-    <!-- Interview Q -->
     <div class="card hidden" id="ivCard">
       <div class="card-label">
         <div class="card-label-icon l-iv">🎤</div>
@@ -549,165 +275,445 @@
       <div class="hint-btn" id="hintBtn" onclick="toggleHint()">💡 Показать подсказку</div>
       <div class="hint-body"  id="hintBody"></div>
     </div>
-
   </div>
 
-  <!-- ═══════════════ PANEL: EXTRA ═══════════════ -->
+  <!-- PANEL: EXTRA -->
   <div class="panel" id="p-extra">
-
-    <!-- Stats -->
-    <div class="card stat-row" style="padding:16px; gap:10px;">
-      <div class="stat-cell">
-        <div class="stat-val" id="sDday">—</div>
-        <div class="stat-label">День</div>
-      </div>
-      <div class="stat-cell">
-        <div class="stat-val" id="sWeek">—</div>
-        <div class="stat-label">Неделя</div>
-      </div>
-      <div class="stat-cell">
-        <div class="stat-val" id="sXP" style="font-size:20px;">—</div>
-        <div class="stat-label">Награда</div>
+    <div class="card" style="margin-bottom:12px;">
+      <div class="stat-row">
+        <div class="stat-cell"><div class="stat-val" id="sDday">—</div><div class="stat-label">День</div></div>
+        <div class="stat-cell"><div class="stat-val" id="sWeek">—</div><div class="stat-label">Неделя</div></div>
+        <div class="stat-cell"><div class="stat-val" id="sXP" style="font-size:20px;">—</div><div class="stat-label">Награда</div></div>
       </div>
     </div>
-
-    <!-- Glossary -->
     <div class="card hidden" id="glossaryCard">
       <div class="card-label">
         <div class="card-label-icon l-glossary">📝</div>
-        <span class="card-label-text">Глоссарий</span>
+        <span class="card-label-text">Глоссарий дня</span>
       </div>
       <div class="glossary-list" id="glossaryList"></div>
     </div>
-
   </div>
 
-</div><!-- /app -->
+</div>
 
-<!-- ─── Bottom action ─── -->
 <div class="bottom-bar">
   <button class="done-btn" id="doneBtn" onclick="done()">Урок прочитан ✓</button>
 </div>
 
-
 <script>
 /* ================================================================
-   TELEGRAM WEB APP INIT
+   LESSON DATA — Week 1
+================================================================ */
+const LESSONS = {
+  1: {
+    title: 'TL, Senior, PM — кто есть кто?',
+    week: 1, xp: 150, isBoss: false,
+    theory: `<p>Прежде чем становиться тимлидом, важно понять: а чем эта роль вообще отличается от того, что ты делаешь сейчас?</p>
+<p><strong>Senior-разработчик</strong> — это эксперт. Он решает самые сложные технические задачи, пишет сложный код, помогает другим разобраться с техническими проблемами. Его главный результат — качественный код. Он работает «руками».</p>
+<p><strong>Техлид (Tech Lead)</strong> — промежуточная роль. Всё ещё пишет код, но принимает технические решения за команду: выбирает архитектуру, проводит code review, устанавливает стандарты. Его продукт — качественная техническая база.</p>
+<p><strong>Тимлид (Team Lead, TL)</strong> — полноценный менеджер. Он <strong>перестаёт писать код регулярно</strong> и переключается на главное: <strong>людей, процессы и коммуникацию</strong>. Нанимает, проводит 1:1, отвечает за рост каждого в команде, общается с бизнесом.</p>
+<p><strong>PM (Product Manager)</strong> — отвечает за то, <em>что</em> строить и <em>зачем</em>. Он работает в паре с тимлидом, но не управляет разработчиками напрямую.</p>
+<p>Ключевой сдвиг: <strong>твой успех = успех каждого человека в команде</strong>. Если команда работает плохо — это твоя ответственность, даже если ты лично ни в чём не виноват(а).</p>`,
+    bookTitle: 'Radical Candor — Ким Скотт, Глава 1',
+    bookText: `<p>Ким Скотт описывает момент, когда сама стала менеджером. Главный инсайт: <strong>задача менеджера — не делать работу самому, а помочь каждому человеку делать свою работу настолько хорошо, насколько он способен.</strong></p>
+<p>Это значит: не решать задачи за людей, не проверять каждую строчку, не быть «самым умным в комнате» — а создавать условия, в которых команда сама принимает хорошие решения.</p>`,
+    task: `<p><strong>Напиши текстом (3–5 предложений):</strong></p>
+<p>Как изменится твой типичный рабочий день после перехода из Senior в TL? Что ты будешь делать больше? Что — меньше? Что в этом пугает, а что привлекает?</p>
+<p><em>Нет правильного ответа — это упражнение на рефлексию. Пригодится на собесе.</em></p>`,
+    ivQ: '«Чем тимлид отличается от сеньора? Почему ты хочешь этот переход?»',
+    ivHint: 'Частый вопрос в начале любого интервью на TL. Задача — ответить своими словами, без заученных фраз.',
+    glossary: [
+      {term:'Тимлид (Team Lead, TL)',def:'Менеджер команды разработчиков. Отвечает за людей, процессы и коммуникацию с бизнесом. Код почти не пишет — его продукт это люди и результаты команды.'},
+      {term:'Техлид (Tech Lead)',def:'Технический лидер команды. Всё ещё пишет код, принимает архитектурные решения, устанавливает стандарты. Ближе к разработчику, дальше от менеджмента.'},
+      {term:'PM / продакт-менеджер',def:'Человек, который решает, что команда будет строить и в каком порядке. Работает с бизнесом и пользователями.'},
+      {term:'Senior / сеньор',def:'Опытный разработчик (обычно 5+ лет). Решает самые сложные технические задачи в команде.'},
+      {term:'IC (Individual Contributor)',def:'Специалист, который работает самостоятельно — пишет код, рисует дизайн — без управления другими людьми. Противоположность менеджеру.'},
+    ],
+    quiz: `<div class="card quiz-card">
+<div class="card-label"><div class="card-label-icon l-quiz">⚡</div><span class="card-label-text">Проверь себя</span></div>
+<p class="quiz-intro">Два быстрых вопроса — убедись, что теория усвоилась</p>
+<div class="quiz-block" id="q1a">
+  <p class="quiz-q">Тимлид принял новую роль. Что теперь его главный результат?</p>
+  <div class="quiz-options">
+    <button class="quiz-btn" data-correct="false" data-ok="" data-fail="Это результат Senior-разработчика, не тимлида. TL уже не работает «руками»." onclick="quizCheck(this,'q1a')">Качественный код, который он написал лично</button>
+    <button class="quiz-btn" data-correct="true"  data-ok="✅ Верно! Тимлид оценивается не по своим задачам, а по тому, насколько хорошо работает вся его команда." data-fail="" onclick="quizCheck(this,'q1a')">Рост и результаты каждого человека в команде</button>
+    <button class="quiz-btn" data-correct="false" data-ok="" data-fail="Это важно, но это задача PM — он отвечает за «что» строить." onclick="quizCheck(this,'q1a')">Новые фичи, выпущенные за квартал</button>
+    <button class="quiz-btn" data-correct="false" data-ok="" data-fail="Главный результат TL — развитие людей, а не velocity." onclick="quizCheck(this,'q1a')">Скорость закрытия задач в трекере</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-block" id="q1b" style="margin-top:18px;">
+  <p class="quiz-q">Команда сорвала дедлайн. Кто несёт за это ответственность?</p>
+  <div class="quiz-options">
+    <button class="quiz-btn" data-correct="false" data-ok="" data-fail="Разработчики отвечают за свои задачи, но системная проблема — зона тимлида." onclick="quizCheck(this,'q1b')">Разработчики, которые неверно оценили задачи</button>
+    <button class="quiz-btn" data-correct="false" data-ok="" data-fail="PM ставит требования, но не управляет процессами внутри команды." onclick="quizCheck(this,'q1b')">PM, поставивший нереальные сроки</button>
+    <button class="quiz-btn" data-correct="true"  data-ok="✅ Точно. Тимлид отвечает за процессы, оценку, планирование и защиту команды от нереальных дедлайнов." data-fail="" onclick="quizCheck(this,'q1b')">Тимлид — это его команда и его процессы</button>
+    <button class="quiz-btn" data-correct="false" data-ok="" data-fail="«Все виноваты» — это уход от ответственности. У тимлида есть конкретная зона." onclick="quizCheck(this,'q1b')">Все поровну, это командная проблема</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+</div>`
+  },
+
+  2: {
+    title: 'За что реально отвечает тимлид?',
+    week: 1, xp: 150, isBoss: false,
+    theory: `<p>Многие думают, что тимлид — это «старший разработчик + чуть менеджмента». Это не так. TL — это <strong>полноценный менеджер</strong>, у которого три главных зоны ответственности.</p>
+<p><strong>🧑‍🤝‍🧑 Люди — это главное.</strong> Развитие каждого участника команды: регулярные 1:1, честная обратная связь, помощь в росте. Ты замечаешь, когда кто-то застрял или теряет мотивацию — и работаешь с этим.</p>
+<p><strong>⚙️ Процессы.</strong> Как команда работает вместе: как планирует задачи, как проводит встречи, как передаёт информацию. Хороший TL создаёт ритм — без хаоса и постоянных авралов.</p>
+<p><strong>🗣️ Коммуникация и стратегия.</strong> Тимлид — мост между командой и остальным миром. Ты объясняешь технические проблемы человеческим языком, защищаешь команду от лишней нагрузки и договариваешься о приоритетах.</p>
+<p>Важно: <strong>тимлид не делает работу за команду</strong>. Его ценность — в том, насколько хорошо работают люди вокруг него.</p>`,
+    bookTitle: 'Peopleware — Том ДеМарко и Тимоти Листер',
+    bookText: `<p>Авторы пишут: <strong>«Главная задача менеджера — не заставлять людей работать, а делать так, чтобы им можно было работать».</strong></p>
+<p>Если команда постоянно отвлекается на бессмысленные митинги, не понимает приоритетов или боится ошибиться — это твоя зона ответственности как TL. Ты убираешь препятствия, а не расставляешь задачи.</p>`,
+    task: `<p><strong>Нарисуй свою версию карты ответственности</strong> для конкретной команды:</p>
+<p>Три колонки: <strong>Я (TL)</strong> | <strong>Команда</strong> | <strong>PM</strong>. Добавь задачи из своего опыта. Подумай: что в твоей версии отличается от типичной?</p>
+<p><em>Нет одного правильного ответа — всё зависит от компании. Главное — понять, где проходит граница.</em></p>`,
+    ivQ: '«Расскажи, как ты понимаешь роль тимлида. За что он отвечает?»',
+    ivHint: 'Используй структуру трёх зон: люди, процессы, коммуникация и стратегия.',
+    glossary: [
+      {term:'1:1 (один-на-один)',def:'Регулярная личная встреча тимлида с каждым разработчиком. Обычно 30–60 минут раз в неделю. Не статус по задачам — а разговор о человеке.'},
+      {term:'Code review (проверка кода)',def:'Процесс, при котором другие разработчики читают и проверяют написанный код до того, как он попадёт в продукт.'},
+      {term:'Технический долг',def:'Накопленные «не до конца» решения в коде. Как беспорядок в квартире — сначала незначительный, потом начинает всё тормозить.'},
+      {term:'Онбординг',def:'Процесс введения нового человека в команду. Хороший онбординг сокращает время выхода на эффективность с 3 месяцев до 3–4 недель.'},
+    ],
+    quiz: `<div class="card quiz-card">
+<div class="card-label"><div class="card-label-icon l-quiz">🎯</div><span class="card-label-text">Карта ответственности</span></div>
+<p class="quiz-intro">Для каждой задачи выбери, кто несёт за неё главную ответственность</p>
+<div class="classify-list" id="day2sort">
+  <div class="classify-item" data-answer="TL"><div class="classify-label">Провести 1:1 с разработчиком</div><div class="classify-btns"><button class="cls-btn" data-val="TL" onclick="clsPick(this)">TL</button><button class="cls-btn" data-val="Команда" onclick="clsPick(this)">Команда</button><button class="cls-btn" data-val="PM" onclick="clsPick(this)">PM</button></div></div>
+  <div class="classify-item" data-answer="PM"><div class="classify-label">Решить, какую фичу делать следующей</div><div class="classify-btns"><button class="cls-btn" data-val="TL" onclick="clsPick(this)">TL</button><button class="cls-btn" data-val="Команда" onclick="clsPick(this)">Команда</button><button class="cls-btn" data-val="PM" onclick="clsPick(this)">PM</button></div></div>
+  <div class="classify-item" data-answer="Команда"><div class="classify-label">Написать код новой функциональности</div><div class="classify-btns"><button class="cls-btn" data-val="TL" onclick="clsPick(this)">TL</button><button class="cls-btn" data-val="Команда" onclick="clsPick(this)">Команда</button><button class="cls-btn" data-val="PM" onclick="clsPick(this)">PM</button></div></div>
+  <div class="classify-item" data-answer="TL"><div class="classify-label">Нанять нового разработчика в команду</div><div class="classify-btns"><button class="cls-btn" data-val="TL" onclick="clsPick(this)">TL</button><button class="cls-btn" data-val="Команда" onclick="clsPick(this)">Команда</button><button class="cls-btn" data-val="PM" onclick="clsPick(this)">PM</button></div></div>
+  <div class="classify-item" data-answer="PM"><div class="classify-label">Общаться с пользователями и изучать их потребности</div><div class="classify-btns"><button class="cls-btn" data-val="TL" onclick="clsPick(this)">TL</button><button class="cls-btn" data-val="Команда" onclick="clsPick(this)">Команда</button><button class="cls-btn" data-val="PM" onclick="clsPick(this)">PM</button></div></div>
+  <div class="classify-item" data-answer="TL"><div class="classify-label">Защитить команду от нереального дедлайна</div><div class="classify-btns"><button class="cls-btn" data-val="TL" onclick="clsPick(this)">TL</button><button class="cls-btn" data-val="Команда" onclick="clsPick(this)">Команда</button><button class="cls-btn" data-val="PM" onclick="clsPick(this)">PM</button></div></div>
+</div>
+<button class="check-btn" onclick="checkClassify('day2sort','day2res')">Проверить</button>
+<div class="check-result" id="day2res"></div>
+</div>`
+  },
+
+  3: {
+    title: 'Первые 30 дней в роли TL',
+    week: 1, xp: 150, isBoss: false,
+    theory: `<p>Самая распространённая ошибка нового тимлида — прийти и сразу начать «починять» всё вокруг. Новые процессы, новые правила, новые инструменты. Итог — команда в стрессе, доверие потеряно ещё до того, как успело появиться.</p>
+<p><strong>Первые 30 дней — это режим наблюдения и слушания.</strong> Цель: понять, как всё устроено на самом деле, а не как должно быть в теории.</p>
+<p>Что делать в первый месяц:</p>
+<ul>
+<li><strong>Провести 1:1 с каждым</strong> — не про задачи, а про людей. Что нравится? Что мешает? О чём мечтают?</li>
+<li><strong>Разобраться в процессах</strong> — как принимаются решения? Почему именно так?</li>
+<li><strong>Найти быстрые победы</strong> — небольшие улучшения, заметные команде. Убрал лишний митинг — это строит доверие.</li>
+<li><strong>Не ломать то, что работает</strong> — у каждого «странного» процесса обычно есть история. Сначала пойми зачем, потом меняй.</li>
+</ul>`,
+    bookTitle: 'Radical Candor — Ким Скотт',
+    bookText: `<p>Скотт описывает нового менеджера, который с первого дня начал менять всё подряд — «чтобы показать, что он тут не просто так». Через месяц лучшие люди начали уходить, доверие было подорвано.</p>
+<p>Её вывод: <strong>сначала слушай, чтобы понять — потом говори, чтобы изменить.</strong> Ты получаешь право что-то менять только тогда, когда команда видит, что ты сначала разобрался(-лась) в том, как устроено.</p>`,
+    task: `<p><strong>Составь план первых 30 дней</strong> на гипотетической позиции TL:</p>
+<p>Раздели на три периода: <strong>Дни 1–7</strong> (знакомство), <strong>Дни 8–20</strong> (анализ), <strong>Дни 21–30</strong> (первые изменения). Для каждого периода — 2–3 конкретных действия.</p>
+<p><em>На собесе этот вопрос задают почти везде. Готовый план — большое преимущество.</em></p>`,
+    ivQ: '«Что ты сделаешь в первые 30 дней на этой позиции?»',
+    ivHint: 'Отвечай конкретно: не «буду знакомиться», а «проведу 1:1 с каждым в первые две недели, разберусь с текущими болями, найду одно улучшение, которое можно сделать быстро».',
+    glossary: [
+      {term:'Быстрые победы (quick wins)',def:'Небольшие улучшения, которые можно сделать быстро и которые сразу заметны команде. Помогают новому TL построить доверие в первые недели.'},
+      {term:'Стейкхолдер (Stakeholder)',def:'Заинтересованная сторона — человек или группа, которым важен результат работы команды: PM, бизнес, другие команды, руководство.'},
+    ],
+    quiz: `<div class="card quiz-card">
+<div class="card-label"><div class="card-label-icon l-quiz">⚡</div><span class="card-label-text">Проверь себя</span></div>
+<p class="quiz-intro">Два сценария — выбери правильный ответ</p>
+<div class="quiz-block" id="q3a">
+  <p class="quiz-q">Ты только что стал(а) тимлидом. Что важнее всего сделать в первые 7 дней?</p>
+  <div class="quiz-options">
+    <button class="quiz-btn" data-correct="false" data-ok="" data-fail="Новые правила в первые дни разрушают доверие, которое ещё не успело сформироваться." onclick="quizCheck(this,'q3a')">Установить новые правила code review сразу</button>
+    <button class="quiz-btn" data-correct="false" data-ok="" data-fail="Реорганизация — необратимое решение. В первые дни ты ещё не знаешь, почему всё устроено именно так." onclick="quizCheck(this,'q3a')">Реорганизовать процессы, которые кажутся неэффективными</button>
+    <button class="quiz-btn" data-correct="true"  data-ok="✅ Правильно. В первые дни — слушаешь и знакомишься. Понять людей важнее, чем сразу что-то менять." data-fail="" onclick="quizCheck(this,'q3a')">Провести 1:1 с каждым, чтобы понять людей и их боли</button>
+    <button class="quiz-btn" data-correct="false" data-ok="" data-fail="Команда хочет видеть, что новый TL интересуется ими, а не своей экспертизой." onclick="quizCheck(this,'q3a')">Самостоятельно закрыть сложные задачи, чтобы показать экспертизу</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-block" id="q3b" style="margin-top:18px;">
+  <p class="quiz-q">Новый TL пришёл в команду и сразу сказал: «У вас тут всё неправильно — буду всё переделывать». Что здесь не так?</p>
+  <div class="quiz-options">
+    <button class="quiz-btn" data-correct="false" data-ok="" data-fail="Процессы могут быть плохими — но проблема не в том, что он это заметил, а в том, что действует не разобравшись." onclick="quizCheck(this,'q3b')">Ничего — плохие процессы надо менять быстро</button>
+    <button class="quiz-btn" data-correct="true"  data-ok="✅ Верно. Он разрушает доверие ещё до того, как оно сформировалось. Сначала нужно разобраться — почему так сделано." data-fail="" onclick="quizCheck(this,'q3b')">Он не разобрался почему так сделано, и подрывает доверие команды</button>
+    <button class="quiz-btn" data-correct="false" data-ok="" data-fail="Это один из примеров, но главная проблема глубже: он действует без понимания контекста." onclick="quizCheck(this,'q3b')">Дейли не его зона — это задача Scrum Master</button>
+    <button class="quiz-btn" data-correct="false" data-ok="" data-fail="Это не главная проблема — он просто не дал себе время понять ситуацию." onclick="quizCheck(this,'q3b')">Ему нужно было сначала согласовать изменения с PM</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+</div>`
+  },
+
+  4: {
+    title: 'Как тимлид принимает решения?',
+    week: 1, xp: 150, isBoss: false,
+    theory: `<p>Тимлид принимает много решений каждый день. Важно понять: <strong>не все решения одинаковые</strong>.</p>
+<p><strong>Обратимые решения</strong> — можно поменять позже без больших потерь. Например: формат митинга, кто ведёт ревью, какой инструмент использовать. Такие решения лучше принимать быстро, не затягивая.</p>
+<p><strong>Необратимые решения</strong> — изменить сложно или дорого. Например: взять или уволить человека, договориться о переносе релиза, отказаться от фичи. Такие решения требуют времени, данных и обсуждения.</p>
+<p><strong>Принцип последнего ответственного момента:</strong> не торопись с решением, пока не нужно. Подожди, пока соберётся больше информации — но не тяни так долго, что окно возможностей закроется.</p>
+<p>И ещё: <strong>хороший TL не принимает все решения сам</strong>. Технические решения делегируй тем, кто ближе к задаче. Твоя роль — задать рамки и снять блокеры.</p>`,
+    bookTitle: 'Проект Феникс — Джин Ким, Кевин Бер, Джордж Спаффорд',
+    bookText: `<p>Один из героев книги, Билл, пытается всё контролировать и принимать все решения сам. Результат — он становится узким местом, и вся работа замедляется.</p>
+<p>Книга учит: <strong>если все ждут твоего решения — ты проблема, а не решение.</strong> Нужно создавать систему, где люди могут принимать решения самостоятельно в своей зоне ответственности.</p>`,
+    task: `<p><strong>Кейс для разбора:</strong></p>
+<p>Пятница, 17:30. PM пишет: «Apple требует добавить Sign in with Apple до релиза — иначе не пропустят в App Store. Релиз в понедельник. Нужно сделать сегодня-завтра». Команда молчит. Ты знаешь, что такая задача занимает 3–4 дня. Плюс завтра суббота.</p>
+<p><strong>Ответь письменно:</strong></p>
+<ul>
+<li>Как ты отреагируешь? Что скажешь PM — и когда?</li>
+<li>Это обратимое или необратимое решение? Почему?</li>
+<li>Будешь ли ты принимать решение сам — или вовлечёшь команду?</li>
+</ul>`,
+    ivQ: '«Как ты принимаешь решения в условиях неопределённости, когда нет очевидно правильного ответа?»',
+    ivHint: 'Хороший ответ включает: критерии оценки, вовлечение команды, разделение на обратимые/необратимые, готовность ошибиться и скорректировать курс.',
+    glossary: [
+      {term:'Узкое место / бутылочное горлышко (Bottleneck)',def:'Место в процессе, где всё замедляется из-за одного человека или шага. Если все ждут твоего одобрения — ты и есть узкое место.'},
+      {term:'Блокер (Blocker)',def:'Всё, что мешает команде двигаться вперёд: нет доступа к сервису, не принято решение, ждут ответа от другого отдела. Снять блокер — одна из главных задач TL.'},
+      {term:'Эскалация (Escalation)',def:'Передача проблемы или решения на уровень выше — руководителю, стейкхолдеру. Уметь вовремя эскалировать — это профессионально, не слабость.'},
+    ],
+    quiz: `<div class="card quiz-card">
+<div class="card-label"><div class="card-label-icon l-quiz">🔀</div><span class="card-label-text">Обратимое или необратимое?</span></div>
+<p class="quiz-intro">Для каждого решения определи его тип — это влияет на скорость и способ принятия</p>
+<div class="classify-list" id="day4sort">
+  <div class="classify-item" data-answer="Обратимое"><div class="classify-label">Изменить формат дейли с 15 минут на 10</div><div class="classify-btns"><button class="cls-btn" data-val="Обратимое" onclick="clsPick(this)">Обратимое</button><button class="cls-btn" data-val="Необратимое" onclick="clsPick(this)">Необратимое</button></div></div>
+  <div class="classify-item" data-answer="Необратимое"><div class="classify-label">Расстаться с разработчиком из команды</div><div class="classify-btns"><button class="cls-btn" data-val="Обратимое" onclick="clsPick(this)">Обратимое</button><button class="cls-btn" data-val="Необратимое" onclick="clsPick(this)">Необратимое</button></div></div>
+  <div class="classify-item" data-answer="Обратимое"><div class="classify-label">Попробовать новый инструмент для задач</div><div class="classify-btns"><button class="cls-btn" data-val="Обратимое" onclick="clsPick(this)">Обратимое</button><button class="cls-btn" data-val="Необратимое" onclick="clsPick(this)">Необратимое</button></div></div>
+  <div class="classify-item" data-answer="Необратимое"><div class="classify-label">Договориться с бизнесом о переносе релиза</div><div class="classify-btns"><button class="cls-btn" data-val="Обратимое" onclick="clsPick(this)">Обратимое</button><button class="cls-btn" data-val="Необратимое" onclick="clsPick(this)">Необратимое</button></div></div>
+  <div class="classify-item" data-answer="Обратимое"><div class="classify-label">Назначить нового ответственного за онбординг</div><div class="classify-btns"><button class="cls-btn" data-val="Обратимое" onclick="clsPick(this)">Обратимое</button><button class="cls-btn" data-val="Необратимое" onclick="clsPick(this)">Необратимое</button></div></div>
+  <div class="classify-item" data-answer="Необратимое"><div class="classify-label">Взять в команду нового человека после оффера</div><div class="classify-btns"><button class="cls-btn" data-val="Обратимое" onclick="clsPick(this)">Обратимое</button><button class="cls-btn" data-val="Необратимое" onclick="clsPick(this)">Необратимое</button></div></div>
+</div>
+<button class="check-btn" onclick="checkClassify('day4sort','day4res')">Проверить</button>
+<div class="check-result" id="day4res"></div>
+</div>`
+  },
+
+  5: {
+    title: 'Делегирование — главный скилл тимлида',
+    week: 1, xp: 150, isBoss: false,
+    theory: `<p>Делегирование — это не «спихивать работу». Это передавать ответственность и доверие.</p>
+<p>Разница такая: <strong>спихнул</strong> — отдал задачу и контролируешь каждый шаг. <strong>Делегировал</strong> — объяснил цель и ожидания, договорился о дедлайне, дал человеку самому решить как.</p>
+<p>Почему тимлиды боятся делегировать:</p>
+<ul>
+<li>«Я сделаю лучше» — возможно, правда. Но ты не можешь делать всё сам вечно.</li>
+<li>«Быстрее сделаю сам» — в краткосроке да. Но ты лишаешь команду роста.</li>
+<li>«Боюсь потерять контроль» — нормально. Но контроль ≠ микроменеджмент.</li>
+</ul>
+<p><strong>Простой принцип:</strong> если задача может быть выполнена на 80% так же хорошо — делегируй. Сохраняй только стратегические и необратимые решения.</p>
+<p>И главное: когда ты делегируешь — ты помогаешь человеку расти. Это часть твоей работы как TL.</p>`,
+    bookTitle: 'Peopleware — Том ДеМарко и Тимоти Листер',
+    bookText: `<p>ДеМарко описывает команды, которые работают как единый организм — когда каждый чувствует себя автором продукта, а не исполнителем. <strong>Это возможно только тогда, когда людям доверяют принимать решения.</strong></p>
+<p>Команды с высокой автономией стабильно показывают более высокое качество работы. Не потому что они умнее — а потому что они вложены в результат.</p>`,
+    task: `<p><strong>Составь матрицу делегирования</strong> для тимлида iOS-команды из 4 человек:</p>
+<p>Три категории:</p>
+<ul>
+<li><strong>Делегирую полностью</strong> — задача, решение, ответственность у разработчика</li>
+<li><strong>Делегирую с поддержкой</strong> — разработчик решает, я помогаю и проверяю результат</li>
+<li><strong>Оставляю себе</strong> — только я</li>
+</ul>
+<p>Задачи: code review, выбор библиотеки, архитектура всего приложения, техническая документация, общение с PM о приоритетах, найм нового разработчика.</p>`,
+    ivQ: '«Как ты делегируешь задачи? Как решаешь, что делать самому, а что отдать команде?»',
+    ivHint: 'Покажи, что в делегировании видишь развитие людей — это сразу выделяет среди тех, кто воспринимает его просто как «разгрузку».',
+    glossary: [
+      {term:'Микроменеджмент',def:'Стиль управления, при котором менеджер контролирует каждый мелкий шаг сотрудника. Убивает мотивацию и не позволяет людям расти.'},
+      {term:'Автономия',def:'Возможность самостоятельно принимать решения в своей зоне ответственности. Один из главных факторов мотивации для квалифицированных специалистов.'},
+    ],
+    quiz: `<div class="card quiz-card">
+<div class="card-label"><div class="card-label-icon l-quiz">📊</div><span class="card-label-text">Матрица делегирования</span></div>
+<p class="quiz-intro">Для каждой задачи выбери уровень делегирования</p>
+<div class="classify-list" id="day5sort">
+  <div class="classify-item" data-answer="Себе"><div class="classify-label">Провести 1:1 с разработчиком — личный разговор о его развитии</div><div class="classify-btns"><button class="cls-btn" data-val="Полностью" onclick="clsPick(this)">Полностью</button><button class="cls-btn" data-val="С поддержкой" onclick="clsPick(this)">С поддержкой</button><button class="cls-btn" data-val="Себе" onclick="clsPick(this)">Себе</button></div></div>
+  <div class="classify-item" data-answer="Полностью"><div class="classify-label">Выбрать библиотеку для нового модуля</div><div class="classify-btns"><button class="cls-btn" data-val="Полностью" onclick="clsPick(this)">Полностью</button><button class="cls-btn" data-val="С поддержкой" onclick="clsPick(this)">С поддержкой</button><button class="cls-btn" data-val="Себе" onclick="clsPick(this)">Себе</button></div></div>
+  <div class="classify-item" data-answer="Себе"><div class="classify-label">Согласовать приоритеты на квартал с PM</div><div class="classify-btns"><button class="cls-btn" data-val="Полностью" onclick="clsPick(this)">Полностью</button><button class="cls-btn" data-val="С поддержкой" onclick="clsPick(this)">С поддержкой</button><button class="cls-btn" data-val="Себе" onclick="clsPick(this)">Себе</button></div></div>
+  <div class="classify-item" data-answer="Полностью"><div class="classify-label">Написать техническую документацию по модулю</div><div class="classify-btns"><button class="cls-btn" data-val="Полностью" onclick="clsPick(this)">Полностью</button><button class="cls-btn" data-val="С поддержкой" onclick="clsPick(this)">С поддержкой</button><button class="cls-btn" data-val="Себе" onclick="clsPick(this)">Себе</button></div></div>
+  <div class="classify-item" data-answer="С поддержкой"><div class="classify-label">Провести финальное интервью с кандидатом</div><div class="classify-btns"><button class="cls-btn" data-val="Полностью" onclick="clsPick(this)">Полностью</button><button class="cls-btn" data-val="С поддержкой" onclick="clsPick(this)">С поддержкой</button><button class="cls-btn" data-val="Себе" onclick="clsPick(this)">Себе</button></div></div>
+  <div class="classify-item" data-answer="Полностью"><div class="classify-label">Code review задачи среднего уровня сложности</div><div class="classify-btns"><button class="cls-btn" data-val="Полностью" onclick="clsPick(this)">Полностью</button><button class="cls-btn" data-val="С поддержкой" onclick="clsPick(this)">С поддержкой</button><button class="cls-btn" data-val="Себе" onclick="clsPick(this)">Себе</button></div></div>
+</div>
+<button class="check-btn" onclick="checkClassify('day5sort','day5res')">Проверить</button>
+<div class="check-result" id="day5res"></div>
+</div>`
+  },
+
+  6: {
+    title: 'Анти-паттерны: как не облажаться в начале',
+    week: 1, xp: 150, isBoss: false,
+    theory: `<p>Каждый новый тимлид делает ошибки. Это нормально. Но некоторые настолько распространены, что их проще назвать и запомнить заранее.</p>
+<p><strong>❌ «Я всё сделаю сам».</strong> Ты продолжаешь писать весь сложный код. Чувствуешь себя продуктивным, но не управляешь — ты просто Senior с новой должностью.</p>
+<p><strong>❌ «Не хочу обидеть».</strong> Ты видишь проблему, но молчишь, чтобы не испортить отношения. Скотт называет это «разрушительной эмпатией». Ты думаешь, что добр, но на деле — вредишь человеку.</p>
+<p><strong>❌ Микроменеджмент.</strong> Проверяешь каждый коммит, спрашиваешь статус каждые два часа. Команда чувствует недоверие и теряет мотивацию.</p>
+<p><strong>❌ «Только мои идеи».</strong> Игнорируешь предложения команды, всегда настаиваешь на своём. Люди перестают предлагать — ты теряешь 80% интеллектуального ресурса.</p>
+<p><strong>❌ «Невидимый TL».</strong> Ты на 10 митингах в день, команда тебя не видит, вопросы висят без ответа. Ты занят, но не полезен.</p>`,
+    bookTitle: 'Radical Candor — Ким Скотт: «Разрушительная эмпатия»',
+    bookText: `<p>Скотт описывает «Разрушительную эмпатию» (Ruinous Empathy): ты заботишься о человеке, но не говоришь ему правду.</p>
+<p>Пример: твой разработчик делает плохие code review. Ты молчишь, чтобы не расстраивать. Проходит полгода — его не повышают, он обижается, что «никто не говорил». <strong>Молчание — это не доброта.</strong></p>`,
+    task: `<p><strong>Рефлексия из своего опыта:</strong></p>
+<p>Вспомни 2–3 тимлида или менеджера, с которыми приходилось работать. Какой анти-паттерн был заметен в их поведении? Как это влияло на команду?</p>
+<p>А теперь честный вопрос: в каком из этих анти-паттернов ты сам(а) можешь оказаться? Запиши и запомни — это твоя зона роста.</p>`,
+    ivQ: '«Какие ошибки ты ожидаешь от себя в начале роли TL? Как будешь с ними работать?»',
+    ivHint: 'Интервьюеры ценят кандидатов, честных про свои слабые стороны — и при этом осознанных.',
+    glossary: [
+      {term:'Анти-паттерн',def:'Типичная ошибка или неэффективное решение, которое выглядит разумным, но на деле вредит. Термин пришёл из разработки, но применим везде.'},
+      {term:'Разрушительная эмпатия (Ruinous Empathy)',def:'Когда менеджер настолько заботится о чувствах человека, что не говорит ему важную критику. Звучит мило, но мешает росту сотрудника.'},
+      {term:'Эмпатия',def:'Способность понимать и разделять чувства другого человека. Важный навык лидера — но без честности превращается в слабость.'},
+    ],
+    quiz: `<div class="card quiz-card">
+<div class="card-label"><div class="card-label-icon l-quiz">🕵️</div><span class="card-label-text">Угадай анти-паттерн</span></div>
+<p class="quiz-intro">Три ситуации из жизни — определи, какой анти-паттерн в каждой</p>
+<div class="quiz-block" id="q6a">
+  <p class="quiz-q">Марина видит, что Максим всё время сдаёт задачи позже срока. Она понимает, что нужно поговорить. Но боится расстроить его и молчит уже несколько месяцев.</p>
+  <div class="quiz-options">
+    <button class="quiz-btn" data-correct="false" data-ok="" data-fail="Нет — он сдаёт задачи, просто позже. Микроменеджмент — это про контроль каждого шага." onclick="quizCheck(this,'q6a')">Микроменеджмент</button>
+    <button class="quiz-btn" data-correct="true"  data-ok="✅ Точно. Марина заботится о человеке, но не говорит ему правду — Ruinous Empathy." data-fail="" onclick="quizCheck(this,'q6a')">«Не хочу обидеть» — разрушительная эмпатия</button>
+    <button class="quiz-btn" data-correct="false" data-ok="" data-fail="Нет — она не берёт его задачи себе. Она просто молчит." onclick="quizCheck(this,'q6a')">«Я всё сделаю сам»</button>
+    <button class="quiz-btn" data-correct="false" data-ok="" data-fail="«Невидимый TL» — это когда человек вообще недоступен для команды." onclick="quizCheck(this,'q6a')">«Невидимый TL»</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-block" id="q6b" style="margin-top:18px;">
+  <p class="quiz-q">Артём — TL, у которого сотни непрочитанных сообщений в Slack. Разработчики ждут его ответа 2–3 дня, задачи зависают.</p>
+  <div class="quiz-options">
+    <button class="quiz-btn" data-correct="false" data-ok="" data-fail="Нет — он не берёт чужие задачи. Он просто исчезает." onclick="quizCheck(this,'q6b')">«Я всё сделаю сам»</button>
+    <button class="quiz-btn" data-correct="false" data-ok="" data-fail="Нет — он не молчит из-за страха обидеть. Он просто физически недоступен." onclick="quizCheck(this,'q6b')">«Не хочу обидеть»</button>
+    <button class="quiz-btn" data-correct="false" data-ok="" data-fail="Нет — он не игнорирует идеи. Его вообще нет на месте." onclick="quizCheck(this,'q6b')">«Только мои идеи»</button>
+    <button class="quiz-btn" data-correct="true"  data-ok="✅ Верно. Артём занят, но недоступен — команда не может получить от него решения и снятые блокеры." data-fail="" onclick="quizCheck(this,'q6b')">«Невидимый TL»</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+<div class="quiz-block" id="q6c" style="margin-top:18px;">
+  <p class="quiz-q">Дима — опытный разработчик, стал TL. Он всё ещё берёт самые сложные задачи сам, потому что «сделаю быстрее». На ретро команда говорит, что скучает без интересных задач.</p>
+  <div class="quiz-options">
+    <button class="quiz-btn" data-correct="true"  data-ok="✅ Да. Дима застрял в роли Senior с новой должностью. Он не даёт команде расти." data-fail="" onclick="quizCheck(this,'q6c')">«Я всё сделаю сам»</button>
+    <button class="quiz-btn" data-correct="false" data-ok="" data-fail="Нет — он не контролирует каждый шаг других. Он просто не отдаёт сложные задачи." onclick="quizCheck(this,'q6c')">Микроменеджмент</button>
+    <button class="quiz-btn" data-correct="false" data-ok="" data-fail="Нет — он активно участвует, просто в роли разработчика, а не менеджера." onclick="quizCheck(this,'q6c')">«Невидимый TL»</button>
+    <button class="quiz-btn" data-correct="false" data-ok="" data-fail="Пока не видно, что он игнорирует чужие идеи. Проблема в другом — он сам пишет весь код." onclick="quizCheck(this,'q6c')">«Только мои идеи»</button>
+  </div>
+  <div class="quiz-feedback"></div>
+</div>
+</div>`
+  },
+
+  7: {
+    title: '⚔️ Boss Battle — «TL за 2 недели до релиза»',
+    week: 1, xp: 300, isBoss: true,
+    theory: `<p><strong>Ситуация:</strong> Тебя только что официально назначили тимлидом команды из 4 человек (3 iOS-разработчика + 1 QA-инженер). Это твоя первая неделя в роли.</p>
+<p>Через <strong>2 недели</strong> — важный публичный релиз, анонсированный клиентам. Ты начинаешь разбираться и выясняешь:</p>
+<ul>
+<li>Алексей говорит, что его задача займёт минимум 3 недели — недооценил сложность</li>
+<li>QA Маша говорит, что при нынешнем темпе не успеет нормально протестировать</li>
+<li>PM пишет: «Релиз не переносим, это договорённость с клиентом»</li>
+<li>Один разработчик уходит в отпуск через 5 дней (согласован месяц назад)</li>
+</ul>`,
+    bookTitle: 'Подсказка из книг недели',
+    bookText: `<p>День 1: роль TL — ты отвечаешь за команду и коммуникацию, не только за код.</p>
+<p>День 3: первые 30 дней — слушай, прежде чем решать.</p>
+<p>День 4: разделяй решения на обратимые и необратимые.</p>
+<p>День 6: не молчи — говори неудобную правду PM и команде. Это твоя работа.</p>`,
+    task: `<p>Напиши письменный разбор — как будто объясняешь решение интервьюеру:</p>
+<ul>
+<li>Что ты делаешь в первые 24 часа? Конкретные шаги.</li>
+<li>Как разговариваешь с Алексеем? Что именно говоришь?</li>
+<li>Как выстраиваешь разговор с PM? Что предлагаешь?</li>
+<li>Какое решение ты принимаешь в итоге? Обоснуй.</li>
+</ul>
+<p><em>После того как напишешь — попроси Клода дать обратную связь на твой ответ. Разберём вместе.</em></p>`,
+    ivQ: 'Кейсы такого типа — стандарт на собесе TL. Именно так интервьюеры проверяют зрелость кандидата.',
+    ivHint: 'После такой практики будешь чувствовать себя намного увереннее, когда подобный сценарий встретится на реальном интервью.',
+    glossary: [],
+    quiz: null
+  }
+};
+
+/* ================================================================
+   TELEGRAM INIT
 ================================================================ */
 const tg = window.Telegram && window.Telegram.WebApp;
 if (tg) { tg.ready(); tg.expand(); }
 
 /* ================================================================
-   PARSE INCOMING DATA
-   Supports: URL query params + URL hash base64-JSON fallback
+   PARSE URL PARAMS
 ================================================================ */
-function getData() {
-  const q   = new URLSearchParams(window.location.search);
-  let   hd  = {};
-  try {
-    const h = window.location.hash.slice(1);
-    if (h) hd = JSON.parse(atob(h));
-  } catch(_) {}
-
-  const get = (k, def='') => q.get(k) || hd[k] || def;
-
+function getParams() {
+  const q = new URLSearchParams(window.location.search);
+  const safe = k => {
+    const v = q.get(k);
+    return v ? decodeURIComponent(v) : null;
+  };
   return {
-    day:      get('day',   '1'),
-    week:     get('week',  '1'),
-    title:    get('title', 'Урок'),
-    xp:       get('xp',   '0'),
-    theory:   get('theory'),
-    bookTitle:get('book_title'),
-    bookText: get('book_text'),
-    task:     get('task'),
-    ivQ:      get('interview_q'),
-    ivHint:   get('interview_hint'),
-    glossary: get('glossary'),
-    isBoss:   get('is_boss','false'),
+    day:   parseInt(safe('day') || '1', 10),
+    week:  safe('week'),
+    xp:    safe('xp'),
   };
 }
 
 /* ================================================================
    HELPERS
 ================================================================ */
-// Convert newline-separated string to <p> tags
-function toParagraphs(raw) {
-  if (!raw) return '';
-  return raw.split(/\n+/)
-    .map(s => s.trim()).filter(Boolean)
-    .map(s => `<p>${s}</p>`)
-    .join('');
-}
-
-// Parse "Term: def\nTerm2: def2" → [{term, def}]
-function parseGlossary(raw) {
-  if (!raw) return [];
-  return raw.split(/\n+/)
-    .map(l => l.trim()).filter(Boolean)
-    .map(l => {
-      const i = l.indexOf(':');
-      return i > 0
-        ? { term: l.slice(0,i).trim(), def: l.slice(i+1).trim() }
-        : { term: l, def: '' };
-    });
-}
-
-function show(id)   { document.getElementById(id).classList.remove('hidden'); }
-function setText(id, val) { document.getElementById(id).textContent = val; }
-function setHTML(id, val) { document.getElementById(id).innerHTML   = val; }
+function show(id)     { document.getElementById(id).classList.remove('hidden'); }
+function setText(id,v){ document.getElementById(id).textContent = v; }
+function setHTML(id,v){ document.getElementById(id).innerHTML   = v; }
 
 /* ================================================================
    RENDER
 ================================================================ */
 function render() {
-  const d = getData();
-  const boss = d.isBoss === 'true' || d.isBoss === '1';
+  const p = getParams();
+  const lesson = LESSONS[p.day] || LESSONS[1];
+
+  const week = p.week || lesson.week;
+  const xp   = p.xp   || lesson.xp;
+  const boss = lesson.isBoss;
 
   // Boss mode
   if (boss) {
     document.getElementById('app').classList.add('boss-mode');
     document.getElementById('bg').classList.add('boss-mode');
     show('bossBanner');
-    document.getElementById('xpPill').innerHTML = `⚔️ <span id="hXP">${d.xp}</span> XP`;
+    document.getElementById('xpPill').innerHTML = `⚔️ <span id="hXP">${xp}</span> XP`;
+    document.getElementById('dayPill').querySelector('.pill-xp');
   }
 
   // Header
-  setText('hDay',  d.day);
-  setText('hWeek', d.week);
-  setText('hXP',   d.xp);
-  setText('hTitle', d.title);
+  setText('hDay',  p.day);
+  setText('hWeek', week);
+  setText('hXP',   xp);
+  setText('hTitle', lesson.title);
 
   // Stats
-  setText('sDday', d.day);
-  setText('sWeek', d.week);
-  setText('sXP',   d.xp + ' ⚡');
+  setText('sDday', p.day);
+  setText('sWeek', week);
+  setText('sXP',   xp + ' ⚡');
 
   // Theory
-  setHTML('theoryBody', toParagraphs(d.theory));
+  setHTML('theoryBody', lesson.theory || '');
+
+  // Quiz (in theory panel)
+  if (lesson.quiz) {
+    document.getElementById('quizSlot').innerHTML = lesson.quiz;
+  }
 
   // Book
-  if (d.bookText) {
+  if (lesson.bookText) {
     show('bookCard');
-    setText('bookSource', d.bookTitle || 'Из книги');
-    setHTML('bookBody',   toParagraphs(d.bookText));
+    setText('bookSource', lesson.bookTitle || 'Из книги');
+    setHTML('bookBody',   lesson.bookText);
   }
 
   // Task
-  setHTML('taskBody', toParagraphs(d.task));
+  setHTML('taskBody', lesson.task || '');
 
   // Interview
-  if (d.ivQ) {
+  if (lesson.ivQ) {
     show('ivCard');
-    setText('ivQ', d.ivQ);
-    setText('hintBody', d.ivHint || '');
-    if (!d.ivHint) document.getElementById('hintBtn').classList.add('hidden');
+    setText('ivQ', lesson.ivQ);
+    if (lesson.ivHint) {
+      setText('hintBody', lesson.ivHint);
+    } else {
+      document.getElementById('hintBtn').classList.add('hidden');
+    }
   }
 
   // Glossary
-  const terms = parseGlossary(d.glossary);
-  if (terms.length) {
+  if (lesson.glossary && lesson.glossary.length) {
     show('glossaryCard');
-    setHTML('glossaryList', terms.map(t => `
+    setHTML('glossaryList', lesson.glossary.map(t => `
       <div class="glossary-item">
         <div class="glossary-term">${t.term}</div>
         ${t.def ? `<div class="glossary-def">${t.def}</div>` : ''}
@@ -736,18 +742,78 @@ function toggleHint() {
 }
 
 /* ================================================================
+   QUIZ: MC (single choice)
+================================================================ */
+function quizCheck(btn, containerId) {
+  const container = document.getElementById(containerId);
+  const allBtns   = container.querySelectorAll('.quiz-btn');
+  const feedback  = container.querySelector('.quiz-feedback');
+  const isCorrect = btn.dataset.correct === 'true';
+
+  allBtns.forEach(b => {
+    b.disabled = true;
+    if (b.dataset.correct === 'true') b.classList.add('correct');
+  });
+  if (!isCorrect) btn.classList.add('wrong');
+
+  const msg = isCorrect ? btn.dataset.ok : btn.dataset.fail;
+  feedback.innerHTML = msg;
+  feedback.classList.add('show', isCorrect ? 'ok' : 'fail');
+}
+
+/* ================================================================
+   QUIZ: CLASSIFY (pick category for each item)
+================================================================ */
+function clsPick(btn) {
+  const item = btn.closest('.classify-item');
+  item.querySelectorAll('.cls-btn').forEach(b => b.classList.remove('picked'));
+  btn.classList.add('picked');
+}
+
+function checkClassify(containerId, resultId) {
+  const container = document.getElementById(containerId);
+  const items  = container.querySelectorAll('.classify-item');
+  const result = document.getElementById(resultId);
+
+  let correct = 0;
+  items.forEach(item => {
+    const answer = item.dataset.answer;
+    const picked = item.querySelector('.cls-btn.picked');
+    const allBtns = item.querySelectorAll('.cls-btn');
+
+    allBtns.forEach(b => { b.disabled = true; });
+
+    if (!picked) {
+      allBtns.forEach(b => { if (b.dataset.val === answer) b.classList.add('reveal'); });
+    } else if (picked.dataset.val === answer) {
+      picked.classList.add('correct');
+      correct++;
+    } else {
+      picked.classList.add('wrong');
+      allBtns.forEach(b => { if (b.dataset.val === answer) b.classList.add('reveal'); });
+    }
+  });
+
+  const total = items.length;
+  const pct   = Math.round((correct / total) * 100);
+  result.textContent = `${correct} из ${total} верно (${pct}%) ${pct === 100 ? '🎉' : pct >= 70 ? '👍' : '📚 Прочитай теорию ещё раз'}`;
+  result.classList.add('show');
+
+  container.parentElement.querySelector('.check-btn').disabled = true;
+}
+
+/* ================================================================
    DONE BUTTON
 ================================================================ */
 function done() {
   const btn = document.getElementById('doneBtn');
-  btn.textContent = '✅ Отлично! +' + (getData().xp) + ' XP';
+  const p   = getParams();
+  const xp  = LESSONS[p.day]?.xp || p.xp || 150;
+
+  btn.textContent = `✅ Отлично! +${xp} XP`;
   btn.classList.add('success');
 
-  // Send event back to Telegram Bot (Make.com can catch this)
-  try {
-    tg.sendData(JSON.stringify({ action: 'lesson_done', day: getData().day }));
-  } catch(_) {}
-
+  try { tg.sendData(JSON.stringify({ action: 'lesson_done', day: p.day })); } catch(_) {}
   setTimeout(() => { try { tg.close(); } catch(_) {} }, 1400);
 }
 
